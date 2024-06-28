@@ -1,13 +1,17 @@
 const express = require('express');
+const connectDB = require('./config/db');
+const bodyParser = require('body-parser');
+require('dotenv').config();
 
 const app = express();
 
-const port = process.env.PORT || 3000; 
+connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Hello from your social network backend!');
-});
+app.use(bodyParser.json()); 
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+app.use('/api/auth', require('./routes/auth'));
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+
