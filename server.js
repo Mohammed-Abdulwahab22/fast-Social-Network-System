@@ -10,6 +10,8 @@ connectDB();
 app.use(bodyParser.json()); 
 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/friendship', require('./routes/friendship'));
+
 
 const PORT = process.env.PORT || 3000;
 
