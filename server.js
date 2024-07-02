@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/friendship', require('./routes/friendship'));
-
+app.use('/api/posts', require('./routes/posts'));
 
 const PORT = process.env.PORT || 3000;
 
