@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { friendsGraph } = require('../utils/friendsGraph');
+const { friendsGraph,bfs } = require('../utils/friendsGraph');
 
 const sendFriendRequests = async (req,res) => {
     try {
@@ -106,6 +106,7 @@ const searchUsers = async (req, res) => {
             ]
         }).select('username email profilePicture');
 
+
         res.json(users);
     } catch (err) {
         console.error(err.message);
@@ -113,4 +114,15 @@ const searchUsers = async (req, res) => {
     }
 };
 
-module.exports = {sendFriendRequests,acceptFriendRequest,rejectFriendRequest,getFriendsList,searchUsers}
+const searchFriends = async (req, res) => {
+    try {
+        const userId = req.user.id; 
+        const friends = await bfs(userId);
+        res.json(friends);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+
+module.exports = {sendFriendRequests,acceptFriendRequest,rejectFriendRequest,getFriendsList,searchUsers,searchFriends};

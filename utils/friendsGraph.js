@@ -53,7 +53,27 @@ async function initializeGraph(){
 
 initializeGraph().catch(err => console.error('error initializing friends graph: ',err));
 
+async function bfs(start) {
+    const queue = [start];
+    const visited = {};
+    const result = [];
+    visited[start] = true;
+
+    while (queue.length) {
+        let current = queue.shift();
+        result.push(current);
+
+        friendsGraph.getNeighbors(current).forEach(neighbor => {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;
+                queue.push(neighbor);
+            }
+        });
+    }
+    return result;
+}
 
 module.exports = {
-    friendsGraph
+    friendsGraph,
+    bfs
 }
