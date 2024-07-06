@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const { friendsGraph } = require('../utils/friendsGraph');
 
 const sendFriendRequests = async (req,res) => {
     try {
@@ -19,6 +20,7 @@ const sendFriendRequests = async (req,res) => {
         targetUser.friendRequests.push(user.id);
         await targetUser.save();
 
+       
         res.json({msg:'Friend request sent'});
 
     } catch (err) {
@@ -48,9 +50,16 @@ const acceptFriendRequest = async (req,res) => {
         user.friends.push(requestingUser.id);
         user.friendRequests = user.friendRequests.filter(id => id.toString() !== requestingUser.id.toString());
         await user.save();
+        
+        friendsGraph.addNode(user._id.toString());
+        friendsGraph.addNode(requestingUser._id.toString());
+        friendsGraph.addEdge(user._id.toString(), requestingUser._id.toString());
 
         requestingUser.friends.push(user.id);
         await requestingUser.save();
+
+        res.json({ msg: 'Friend request accepted' });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -79,7 +88,7 @@ const rejectFriendRequest = async (req, res) => {
 const getFriendsList = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).populate('friends', 'username email profilePicture');
-
+        // const friends = Array.from(friendsGraph.getNeighbors(req.user.id))
         res.json(user.friends);
     } catch (err) {
         console.error(err.message);
