@@ -1,4 +1,4 @@
-## Social Network Backend: A Focus on Speed, Innovation, and Advanced Data Structures
+# Social Network Backend: A Focus on Speed, Innovation, and Advanced Data Structures
 This project explores the design and implementation of a social network backend system with a primary emphasis on achieving high performance and introducing novel algorithms. It leverages Node.js for a robust and scalable backend architecture and utilizes advanced data structures like graphs and priority queues to enhance functionality and speed.
 
 Key Objectives:
